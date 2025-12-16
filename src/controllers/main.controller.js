@@ -5,7 +5,6 @@ const index = (req, res) => {
 };
 
 const private = (req, res) => {
-    console.log(__dirname);
     res.sendFile(path.resolve(__dirname, '../../private/index.html'));
 
 };
