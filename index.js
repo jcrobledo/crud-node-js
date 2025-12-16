@@ -2,14 +2,17 @@ require("dotenv").config(); // requerimos el módulo para leer las variables de 
 
 const express = require("express");
 const app = express();
-const PORT = process.env.PORT || 3001;
-
 const path = require("path");
+const layouts = require("express-ejs-layouts");
+const PORT = process.env.PORT || 3001;
 
 app.use(express.static(path.join(__dirname, "public")));
 
 app.set("view engine", "ejs");
 app.set("views", path.join(__dirname, "src/views"));
+
+app.use(layouts);
+app.set("layout", "./layouts/layout"); // especificamos la ubicación del layout principal
 
 const mainRouter = require('./src/routes/main.router');
 app.use(mainRouter);
