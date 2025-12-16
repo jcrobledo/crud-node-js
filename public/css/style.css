@@ -1,0 +1,21 @@
+ h1 {
+    color:darkorange;
+    text-align: center;
+}
+
+h2 {
+    color: darkblue;
+    text-align: center;
+}
+
+.products {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+    padding: 20px;
+}
+
+p {
+    font: tahoma;    
+    text-align: center;
+}
