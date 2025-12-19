@@ -1,0 +1,27 @@
+<h1>Listado de Categorías</h1>
+<table border="1" 
+        cellpadding="5" 
+        cellspacing="0" 
+        width="50%" 
+        style="border-collapse: collapse;" 
+        align="center">
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Nombre</th>            
+        </tr>
+    </thead>
+    <tbody align="center">
+        <% categorias.forEach(function(categoria) { %>
+            <tr>
+                <td><%= categoria.id %></td>
+                <td><a href="/categorias/<%= categoria.id %>"><%= categoria.nombre %></a></td>                
+            </tr>
+        <% }); %>
+    </tbody>
+</table>
+<br>
+<div align="center">
+    <a href="categorias/create">
+        <button>Crear Nueva Categoría</button>        
+    </a>

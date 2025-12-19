@@ -1,0 +1,38 @@
+<h1>Eliminar Categoría</h1>
+<form 
+    class="form-delete"
+    action="/categorias/<%= categoria.id %>/delete?_method=DELETE" 
+    method="POST" 
+    align="center">
+    <div>
+        <label for="id">ID:</label>
+        <input type="text" id="id" name="id" value="<%= categoria.id %>" readonly />
+    </div>
+    <div>
+        <label for="nombre">Nombre:</label>
+        <input type="text" id="nombre" name="nombre" value="<%= categoria.nombre %>" readonly />
+    </div>
+    <div>
+        <label for="descripcion">Descripción:</label>
+        <textarea id="descripcion" name="descripcion" readonly>
+<%= categoria.descripcion %></textarea>
+    </div>
+    <br />
+    <input type="submit" value="Eliminar Categoría" />
+</form>
+<br>
+<div align="center">
+    <button onclick="location.href='/categorias'">Volver a Categorías</button>
+</div>
+
+<script>
+    document.addEventListener('submit', (event) => {
+        event.preventDefault();
+    
+        if (event.target.classList.contains('form-delete')) {
+            if (confirm('¿Estás seguro de que deseas eliminar esta categoría?')) {
+                event.target.submit();
+            }
+        } 
+    });  
+</script>

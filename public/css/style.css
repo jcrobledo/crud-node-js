@@ -1,3 +1,13 @@
+ body {
+    display: grid;
+    grid-template-rows: 70px 1fr 70px;
+    min-height: 98vh;
+    max-width: 90vw;
+    font-family: Arial, sans-serif;
+    margin: auto;
+    padding: 0;
+ }
+
  h1 {
     color:darkorange;
     text-align: center;
@@ -19,3 +29,107 @@ p {
     font: tahoma;    
     text-align: center;
 }
+
+a {
+    text-decoration: none;
+    color: darkblue
+}
+
+ul, ol {
+    list-style: none;
+    padding-left: 0;
+}
+
+.navHeader {
+    background-color: #010481;    
+    padding: 10px 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0 2px 4px rgba(7, 124, 235, 0.856);
+}  
+
+.navHeader a {
+    color: white;
+    font-size: 16px;
+    font-weight: bold;
+}
+
+.menu {
+    display: flex;
+    gap: 15px;
+}
+
+input[type="submit"] {
+    display: inline-block;
+    background-color: darkorange;
+    color: white;
+    padding: 0.25em 0.5em;
+    border: 1px solid darkorange;
+    border-radius: 5px;
+    cursor: pointer;
+    text-align: center;
+}
+
+input[type="submit"]:hover {
+    box-shadow: 1px 1px 5px darkorange;
+}
+
+button {
+    display: inline-block;
+    border-radius: 5px;
+    padding: 0.25em 0.5em;
+    cursor: pointer;
+    text-align: center;
+    border: 1px solid gray;
+}
+
+button:hover {
+    box-shadow: 1px 1px 5px gray;
+}
+
+.button--primary {
+    background-color: darkorange;
+    color: white;
+    padding: 10px 15px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    text-align: center;
+}
+
+.button--primary:hover {
+    background-color: orangered;
+}
+
+.button--danger {
+    background-color: darkred;
+    color: white;
+    padding: 10px 15px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    text-align: center;
+}
+
+.button--danger:hover {
+    background-color: red;
+}
+
+form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 10px;
+    padding: auto0.25em;
+    border-radius: 5px;    
+}
+
+label {
+    font-weight: bold;
+    margin-right: 10px;     
+    float: left;
+    }
+
+

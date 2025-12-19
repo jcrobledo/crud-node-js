@@ -1,0 +1,9 @@
+<h1>Detalle de la Categoría</h1>
+<p><strong>ID:</strong> <%= categoria.id %></p>
+<p><strong>Nombre:</strong> <%= categoria.nombre %></p>
+<p><strong>Descripción:</strong> <%= categoria.descripcion %></p>
+<div align="center">
+  <button onclick="history.back()">Volver a Categorías</button>
+  <button onclick="location.href='/categorias/<%= categoria.id %>/update'">Editar Categoría</button>
+  <button onclick="location.href='/categorias/<%= categoria.id %>/delete'">Eliminar Categoría</button>
+</div>

@@ -1,19 +1,36 @@
+<% if (typeof enviado == 'undefined') { visible = false } else { visible = true }; %>
+<% if (typeof deshabilitado == 'undefined') { deshabilitado = false }; %>
+<% disableItem = deshabilitado ? 'disabled' : ''; %> 
+<% if (typeof nombre == 'undefined') { nombre = '' }; %>
+<% if (typeof correo == 'undefined') { correo = '' }; %>
+<% if (typeof mensaje == 'undefined') { mensaje = '' }; %>
+
 <h1>Contacto</h1>
 
 <form action="/contacto" method="post" align="center">
     <div>
         <label for="nombre">Nombre: </label>
-        <input type="text" name="nombre" id="nombre">
+        <input type="text" name="nombre" id="nombre" value="<%= nombre %>" required <%= disableItem %>>
     </div>
     <div>
         <label for="correo">Email: </label>
-        <input type="email" name="correo" id="correo">
-    </div>  
+        <input type="email" name="correo" id="correo" value="<%= correo %>" required <%= disableItem %>>
+    </div>
     <div>
         <label for="mensaje">Mensaje: </label>
-        <textarea name="mensaje" id="mensaje" cols="30" rows="10"></textarea>   
+        <textarea name="mensaje" id="mensaje" cols="30" rows="10" required <%= disableItem %>><%= mensaje %></textarea>
     </div>
+    <br>
     <div>
-        <button type="submit">Enviar</button>
+        <button type="submit" <%= disableItem %>>Enviar</button>
     </div>
 </form>
+<% if (typeof enviado !=='undefined' && enviado && visible) { %>
+    <h1>¡Mensaje enviado con éxito!</h1>
+    <% } else { if (visible) { %>
+        <h1>Error de envío. Por favor, inténtelo de nuevo más tarde</h1>
+        <% }} %> 
+<br>
+<div align="center">
+    <button onclick="location.href='/'">Volver al Inicio</button>
+</div>

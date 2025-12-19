@@ -1,0 +1,17 @@
+<h1>Crear Nueva Categoría</h1>
+<form action="/categorias/create" method="POST" align="center">
+  <div>
+    <label for="nombre">Nombre:</label>
+    <input type="text" id="nombre" name="nombre" required />
+  </div>
+  <div>
+    <label for="descripcion">Descripción:</label>
+    <textarea id="descripcion" name="descripcion" required></textarea>
+  </div>
+  <br />
+  <input type="submit" value="Crear Categoría" />  
+</form>
+<br />
+<div align="center">
+  <button onclick="history.back()">Volver a Categorías</button>
+</div>

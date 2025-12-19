@@ -1,7 +1,7 @@
 const nodemailer = require("nodemailer");
 
 const index = (req, res) => {
-  res.render("contacto");
+  res.render("contacto", { title: "Contacto" });
 };
 
 const submit = async (req, res) => {
@@ -26,10 +26,12 @@ const submit = async (req, res) => {
     console.info(info);
   } catch (error) {
     console.error("Error al enviar el correo:", error);
-    res.status(500).send("Error al enviar el correo");
+    res.status(500).render("contacto", { title: "Contacto", enviado: false, visible: true, deshabilitado: true,
+      nombre: req.body.nombre, correo: req.body.correo, mensaje: req.body.mensaje });
   }
 
-  res.send("Enviado...");
+  res.render("contacto", { title: "Contacto", enviado: true, visible: true, deshabilitado: true, 
+    nombre: req.body.nombre, correo: req.body.correo, mensaje: req.body.mensaje });
 };
 
 module.exports = {
