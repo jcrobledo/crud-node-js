@@ -4,6 +4,7 @@
     min-height: 98vh;
     max-width: 90vw;
     font-family: Arial, sans-serif;
+    font-size: 15px;
     margin: auto;
     padding: 0;
  }
@@ -64,7 +65,7 @@ input[type="submit"] {
     display: inline-block;
     background-color: darkorange;
     color: white;
-    padding: 0.25em 0.5em;
+    padding: 6px 15px;
     border: 1px solid darkorange;
     border-radius: 5px;
     cursor: pointer;
@@ -72,13 +73,30 @@ input[type="submit"] {
 }
 
 input[type="submit"]:hover {
+    background-color: red;
+    box-shadow: 1px 1px 5px darkorange;
+}
+
+.btEnviar {
+    display: inline-block;
+    background-color: darkorange;
+    color: white;
+    padding: 6px 15px;
+    border: 1px solid darkorange;
+    border-radius: 5px;
+    cursor: pointer;
+    text-align: center;
+}
+
+.btEnviar:hover {
+    background-color: red;
     box-shadow: 1px 1px 5px darkorange;
 }
 
 button {
     display: inline-block;
     border-radius: 5px;
-    padding: 0.25em 0.5em;
+    padding: 6px 15px;
     cursor: pointer;
     text-align: center;
     border: 1px solid gray;
@@ -91,7 +109,7 @@ button:hover {
 .button--primary {
     background-color: darkorange;
     color: white;
-    padding: 10px 15px;
+    padding: 6px 15px;
     border: none;
     border-radius: 5px;
     cursor: pointer;
@@ -105,7 +123,7 @@ button:hover {
 .button--danger {
     background-color: darkred;
     color: white;
-    padding: 10px 15px;
+    padding: 6px 15px;
     border: none;
     border-radius: 5px;
     cursor: pointer;
@@ -117,19 +135,48 @@ button:hover {
 }
 
 form {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: flex-end;
-    gap: 10px;
-    padding: auto0.25em;
-    border-radius: 5px;    
+      
+    background-color: oldlace; 
+    border-radius: 5px;
+    padding: 10px;       
+    width: 250px;   
+    margin: 0 auto;          
 }
 
-label {
-    font-weight: bold;
-    margin-right: 10px;     
-    float: left;
-    }
+input[type="text"] { 
+    width: 240px; 
+    padding: 4px; 
+    outline: none;    
+}
 
+input[type="text"]:focus {
+    border: 2.5px solid darkorange;        
+}
 
+input[type="email"] { 
+    width: 240px; 
+    padding: 4px; 
+    outline: none;    
+}
+
+input[type="email"]:focus {
+    border: 2.5px solid darkorange;        
+}
+
+textarea {
+    field-sizing: content;  
+    width: 237px;
+    height: 100px;
+    resize: none;
+    padding: 0.5em;  
+    outline: none;   
+}
+
+textarea:focus {
+    border:2.5px solid darkorange;
+}
+
+.p_form {
+    text-align: left;
+    margin: 2px;
+}

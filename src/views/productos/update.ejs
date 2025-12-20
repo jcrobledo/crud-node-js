@@ -1,0 +1,23 @@
+<h1>Actualizar Producto</h1>
+<form action="/productos/<%= producto.id %>/update?_method=PUT" method="POST">
+    <p class="p_form">
+        <label for="id">ID:</label>
+    </p>
+    <input type="text" id="id" name="id" value="<%= producto.id %>" disabled />
+    <p class="p_form">
+        <label for="nombre">Nombre:</label>
+    </p>
+    <input type="text" id="nombre" name="nombre" value="<%= producto.title %>" required />
+    <p class="p_form">
+        <label for="descripcion">Descripción:</label>
+    </p>
+    <textarea id="descripcion" name="descripcion" required>
+<%= producto.description %></textarea>
+    <br>
+    <br>
+    <input type="submit" value="Actualizar Producto" />
+</form>
+<br>
+<div align="center">
+    <button onclick="location.href='/productos'">Volver a Productos</button>
+</div>

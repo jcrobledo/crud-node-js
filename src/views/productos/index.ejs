@@ -1,0 +1,27 @@
+<h1>Listado de Productos</h1>
+<table border="1" 
+        cellpadding="5" 
+        cellspacing="0" 
+        width="50%" 
+        style="border-collapse: collapse;" 
+        align="center">
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Nombre</th>            
+        </tr>
+    </thead>
+    <tbody align="center">
+        <% productos.forEach(function(producto) { %>
+            <tr>
+                <td><%= producto.id %></td>
+                <td><a href="/productos/<%= producto.id %>"><%= producto.title %></a></td>                
+            </tr>
+        <% }); %>
+    </tbody>
+</table>
+<br>
+<div align="center">
+    <a href="productos/create">
+        <button>Crear Nuevo Producto</button>        
+    </a>

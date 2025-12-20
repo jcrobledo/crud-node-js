@@ -1,19 +1,20 @@
 <h1>Actualizar Categoría</h1>
-<form action="/categorias/<%= categoria.id %>/update?_method=PUT" method="POST" align="center">
-    <div>
+<form action="/categorias/<%= categoria.id %>/update?_method=PUT" method="POST">
+    <p class="p_form">
         <label for="id">ID:</label>
-        <input type="text" id="id" name="id" value="<%= categoria.id %>" readonly />
-    </div>
-    <div>
+    </p>
+    <input type="text" id="id" name="id" value="<%= categoria.id %>" disabled />
+    <p class="p_form">
         <label for="nombre">Nombre:</label>
-        <input type="text" id="nombre" name="nombre" value="<%= categoria.nombre %>" required />
-    </div>
-    <div>
+    </p>
+    <input type="text" id="nombre" name="nombre" value="<%= categoria.nombre %>" required />
+    <p class="p_form">
         <label for="descripcion">Descripción:</label>
-        <textarea id="descripcion" name="descripcion" required>
+    </p>
+    <textarea id="descripcion" name="descripcion" required>
 <%= categoria.descripcion %></textarea>
-    </div>
-    <br />
+    <br>
+    <br>
     <input type="submit" value="Actualizar Categoría" />
 </form>
 <br>

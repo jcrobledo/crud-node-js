@@ -1,25 +1,25 @@
-<h1>Eliminar Categoría</h1>
-<form class="form-delete" action="/categorias/<%= categoria.id %>/delete?_method=DELETE" method="POST">
+<h1>Eliminar Producto</h1>
+<form class="form-delete" action="/productos/<%= producto.id %>/delete?_method=DELETE" method="POST">
     <p class="p_form">
         <label for="id">ID:</label>
     </p>
-    <input type="text" id="id" name="id" value="<%= categoria.id %>" disabled />
+    <input type="text" id="id" name="id" value="<%= producto.id %>" disabled />
     <p class="p_form">
         <label for="nombre">Nombre:</label>
     </p>
-    <input type="text" id="nombre" name="nombre" value="<%= categoria.nombre %>" disabled />
+    <input type="text" id="nombre" name="nombre" value="<%= producto.title %>" disabled />
     <p class="p_form">
         <label for="descripcion">Descripción:</label>
     </p>
     <textarea id="descripcion" name="descripcion" disabled>
-<%= categoria.descripcion %></textarea>
+<%= producto.description %></textarea>
     <br>
     <br>
-    <input type="submit" value="Eliminar Categoría" />
+    <input type="submit" value="Eliminar Producto" />
 </form>
 <br>
 <div align="center">
-    <button onclick="location.href='/categorias'">Volver a Categorías</button>
+    <button onclick="location.href='/productos'">Volver a Productos</button>
 </div>
 
 <script>
@@ -27,7 +27,7 @@
         event.preventDefault();
 
         if (event.target.classList.contains('form-delete')) {
-            if (confirm('¿Estás seguro de que deseas eliminar esta categoría?')) {
+            if (confirm('¿Estás seguro de que deseas eliminar este producto?')) {
                 event.target.submit();
             }
         }

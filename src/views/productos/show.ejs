@@ -1,0 +1,9 @@
+<h1>Detalle del Producto</h1>
+<p><strong>ID:</strong> <%= producto.id %></p>
+<p><strong>Nombre:</strong> <%= producto.title %></p>
+<p><strong>Descripción:</strong> <%= producto.description %></p>
+<div align="center">
+  <button onclick="history.back()">Volver a Productos</button>
+  <button onclick="location.href='/productos/<%= producto.id %>/update?title=<%= producto.title %>&description=<%= producto.description %>'">Editar Producto</button>
+  <button onclick="location.href='/productos/<%= producto.id %>/delete?title=<%= producto.title %>&description=<%= producto.description %>'">Eliminar Producto</button>
+</div>

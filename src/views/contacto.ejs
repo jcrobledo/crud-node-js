@@ -7,23 +7,26 @@
 
 <h1>Contacto</h1>
 
-<form action="/contacto" method="post" align="center">
-    <div>
+<form action="/contacto" method="post">
+    <p class="p_form">
         <label for="nombre">Nombre: </label>
+        </p>
         <input type="text" name="nombre" id="nombre" value="<%= nombre %>" required <%= disableItem %>>
-    </div>
-    <div>
+    
+    <p class="p_form">
         <label for="correo">Email: </label>
+        </p>
         <input type="email" name="correo" id="correo" value="<%= correo %>" required <%= disableItem %>>
-    </div>
-    <div>
+    <p class="p_form">
         <label for="mensaje">Mensaje: </label>
+        </p>
         <textarea name="mensaje" id="mensaje" cols="30" rows="10" required <%= disableItem %>><%= mensaje %></textarea>
-    </div>
+   
     <br>
-    <div>
-        <button type="submit" <%= disableItem %>>Enviar</button>
-    </div>
+    <br>
+   
+        <button class="btEnviar" type="submit" <%= disableItem %>>Enviar</button>
+   
 </form>
 <% if (typeof enviado !=='undefined' && enviado && visible) { %>
     <h1>¡Mensaje enviado con éxito!</h1>
