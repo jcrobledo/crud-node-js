@@ -1,9 +1,9 @@
 <h1>Detalle de la Categoría</h1>
 <p><strong>ID:</strong> <%= categoria.id %></p>
-<p><strong>Nombre:</strong> <%= categoria.nombre %></p>
-<p><strong>Descripción:</strong> <%= categoria.descripcion %></p>
+<p><strong>Nombre:</strong> <%= categoria.title %></p>
+<p><strong>Descripción:</strong> <%= categoria.description %></p>
 <div align="center">
-  <button onclick="history.back()">Volver a Categorías</button>
-  <button onclick="location.href='/categorias/<%= categoria.id %>/update'">Editar Categoría</button>
-  <button onclick="location.href='/categorias/<%= categoria.id %>/delete'">Eliminar Categoría</button>
+  <button onclick="history.back()">Volver</button>
+  <button onclick="location.href='/categorias/<%= categoria.id %>/update?title=<%= categoria.title %>&description=<%= categoria.description %>'">Editar Categoría</button>
+  <button onclick="location.href='/categorias/<%= categoria.id %>/delete?title=<%= categoria.title %>&description=<%= categoria.description %>'">Eliminar Categoría</button>
 </div>

@@ -1,73 +1,94 @@
-const categorias = [
-  { id: 1, nombre: "Electrónica", descripcion: "Dispositivos electrónicos" },
-  { id: 2, nombre: "Ropa", descripcion: "Prendas de vestir" },
-  { id: 3, nombre: "Hogar", descripcion: "Artículos para el hogar" },
-  { id: 4, nombre: "Libros", descripcion: "Publicaciones escritas" },
-];
-
-const index = (req, res) => {
-  res.render("categorias/index", { title: "Categorías", categorias });
-};
-
-const show = (req, res) => {
-  const { id } = req.params;
-  const categoria = categorias.find((cat) => cat.id === parseInt(id));
-  if (!categoria) {
-    return res.status(404).send("Categoría no encontrada");
-  }
-  res.render("categorias/show", { title: "Detalle de Categoría", categoria });
-};
+const model = require("../models/category");
 
 const createCategoria = (req, res) => {
-  res.render("categorias/create", { title: "Crear Nueva Categoría" });
+  res.render("categorias/create", { title: "Crear Categoría" });
 };
 
-const storeCategoria = (req, res) => {
+const storeCategoria = async (req, res) => {
   const { nombre, descripcion } = req.body;
   const nuevaCategoria = {
-    id: categorias.length + 1,
-    nombre,
-    descripcion
+    title: nombre,
+    description: descripcion,
   };
-  categorias.push(nuevaCategoria);
-  res.redirect("/categorias");
+  try {
+    const result = await model.create(nuevaCategoria);
+    res.redirect("/categorias");
+  } catch (error) {
+    console.error("Error al almacenar la categoría:", error);
+    return res.status(500).send("Error al almacenar la categoría");
+  }
 };
 
-const updateCategoria = (req, res) => {  
-  const { id } = req.params;
-  const categoria = categorias.find((cat) => cat.id === parseInt(id));
-  if (!categoria) {
-    return res.status(404).send("Categoría no encontrada");
+const index = async (req, res) => {
+  try {
+    const categorias = await model.findAll();
+    res.render("categorias/index", { title: "Categorías", categorias });
+  } catch (error) {
+    return res.status(500).send("Error al listar todas las categorías");
   }
+};
+
+const show = async (req, res) => {
+  const { id } = req.params;
+  try {
+    const categoria = await model.findByPk(id);
+    if (!categoria) {
+      return res.status(404).send("Categoría no encontrada");
+    }
+    res.render("categorias/show", { title: "Detalle de Categoría", categoria });
+  } catch (error) {
+    console.error("Error al obtener la categoría:", error);
+    res.status(500).send("Error al obtener la categoría");
+  }
+};
+
+const updateCategoria = (req, res) => {
+  const { id } = req.params;
+  const categoria = {
+    id: id,
+    title: req.query.title,
+    description: req.query.description,
+  };
   res.render(`categorias/update`, { title: "Actualizar Categoría", categoria });
 };
 
-const update = (req, res) => {
+const update = async (req, res) => {
   const { id } = req.params;
-  const { nombre, descripcion } = req.body;
-  const categoria = categorias.find((cat) => cat.id === parseInt(id));
-  if (!categoria) {
-    return res.status(404).send("Categoría no encontrada");
+  const updatedCategoria = {
+    title: req.body.nombre,
+    description: req.body.descripcion,
+  };
+  try {
+    const result = await model.update(updatedCategoria, { where: { id: id } });
+    if (!updateCategoria) {
+      return res.status(404).send("Categoría no encontrada");
+    }
+    res.redirect("/categorias");
+  } catch (error) {
+    console.error("Error al actualizar la categoría:", error);
+    res.status(500).send("Error al actualizar la categoría");
   }
-  const index = categorias.findIndex((cat) => cat.id === parseInt(id));
-  categorias[index] = { id: parseInt(id), nombre, descripcion };
-  res.redirect("/categorias");
 };
 
 const deleteCategoria = (req, res) => {
   const { id } = req.params;
-  const categoria = categorias.find((cat) => cat.id === parseInt(id));
-  if (!categoria) {
-    return res.status(404).send("Categoría no encontrada");
-  } 
+  const categoria = {
+    id: id,
+    title: req.query.title,
+    description: req.query.description,
+  };
   res.render("categorias/delete", { title: "Eliminar Categoría", categoria });
 };
 
-const deleteID = (req, res) => {
+const deleteID = async (req, res) => {
   const { id } = req.params;
-  const index = categorias.findIndex((cat) => cat.id === parseInt(id));
-  categorias.splice(index, 1);
-  res.redirect("/categorias");
+  try {
+    const result = await model.destroy({ where: { id: id } });
+    res.redirect("/categorias");
+  } catch (error) {
+    console.error("Error al eliminar la categoría:", error);
+    res.status(500).send("Error al eliminar la categoría");
+  }  
 };
 
 module.exports = {
@@ -78,5 +99,5 @@ module.exports = {
   updateCategoria,
   update,
   deleteCategoria,
-  deleteID
+  deleteID,
 };

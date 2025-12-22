@@ -1,9 +1,9 @@
 const pool = require('./mysql');
 
 const store = async (producto) => {
-    const sql = 'INSERT INTO products (title, description) VALUES (?, ?)';
+    const sql = 'INSERT INTO products (title, description, categoryID) VALUES (?, ?, ?)';
     try {
-        const [result] = await pool.execute(sql, [producto.nombre, producto.descripcion]);
+        const [result] = await pool.execute(sql, [producto.nombre, producto.descripcion, producto.categoriaID]);
         return result.insertId;        
     } catch (error) {
         throw error;
@@ -30,10 +30,10 @@ const findById = async (id) => {
     };      
 };
 
-const update = async (id, producto) => {
-    const sql = 'UPDATE products SET title = ?, description = ? WHERE id = ?';
+const update = async (id, producto) => {    
+    const sql = 'UPDATE products SET title = ?, description = ?, categoryID = ? WHERE id = ?';
     try {
-        await pool.execute(sql, [producto.title, producto.description, id]);
+        await pool.execute(sql, [producto.title, producto.description, producto.categoryID, id]);
     } catch (error) {
         throw error;
     };

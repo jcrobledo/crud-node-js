@@ -3,12 +3,23 @@
     <p class="p_form">
         <label for="id">ID:</label>
     </p>
-    <input type="text" id="id" name="id" value="<%= producto.id %>" disabled />
+    <input type="text" id="id" name="id" value="<%= producto.id %>" readonly />
     <p class="p_form">
         <label for="nombre">Nombre:</label>
     </p>
     <input type="text" id="nombre" name="nombre" value="<%= producto.title %>" required />
     <p class="p_form">
+    <p class="p_form">
+    <label for="categoria">Categoría:</label>
+  </p>
+  <select id="categoria" name="categoria" required>
+    <option value=""></option>
+    <% categorias.forEach(function(categoria) { %>
+      <option value="<%= categoria.id %>"
+        <%= categoria.title == producto.categoria ? 'selected' : '' %>
+        ><%= categoria.title %></option>
+    <% }); %>
+  </select>  
         <label for="descripcion">Descripción:</label>
     </p>
     <textarea id="descripcion" name="descripcion" required>

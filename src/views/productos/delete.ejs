@@ -9,6 +9,12 @@
     </p>
     <input type="text" id="nombre" name="nombre" value="<%= producto.title %>" disabled />
     <p class="p_form">
+    <label for="categoria">Categoría:</label>
+  </p>
+  <select id="categoria" name="categoria" disabled>
+    <option value=""><%= producto.category %></option>    
+  </select> 
+    <p class="p_form">
         <label for="descripcion">Descripción:</label>
     </p>
     <textarea id="descripcion" name="descripcion" disabled>

@@ -8,14 +8,20 @@
     <thead>
         <tr>
             <th>ID</th>
-            <th>Nombre</th>            
+            <th>Nombre</th>  
+            <th>Descripción</th>
+            <th>Categoría</th>          
         </tr>
     </thead>
     <tbody align="center">
         <% productos.forEach(function(producto) { %>
             <tr>
                 <td><%= producto.id %></td>
-                <td><a href="/productos/<%= producto.id %>"><%= producto.title %></a></td>                
+                <td><a href="/productos/<%= producto.id %>"><%= producto.title %></a></td> 
+                <td><%= producto.description %></td>  
+                <td><a href="/categorias/<%= producto.categoryID %>">
+                    <%= categoriaMap[producto.categoryID] ? categoriaMap[producto.categoryID].title : "Sin categoría" %>
+                </a></td>             
             </tr>
         <% }); %>
     </tbody>
