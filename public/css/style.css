@@ -43,7 +43,7 @@ ul, ol {
 
 .navHeader {
     background-color: #010481;    
-    padding: 10px 20px;
+    padding: 5px 30px;
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -75,6 +75,17 @@ input[type="submit"] {
 input[type="submit"]:hover {
     background-color: red;
     box-shadow: 1px 1px 5px darkorange;
+}
+
+.btDeshabilitado {    
+    cursor: default; 
+    opacity: 0.6;        
+    background-color: #ccc;
+    color: #666;        
+}
+
+.btDeshabilitado:hover {
+    box-shadow: none;
 }
 
 .btEnviar {
@@ -138,7 +149,7 @@ form {
       
     background-color: oldlace; 
     border-radius: 5px;
-    padding: 10px;       
+    padding: 20px;       
     width: 250px;   
     margin: 0 auto;          
 }
@@ -157,6 +168,10 @@ input[type="text"]:read-only {
     background-color: linen;       
 }
 
+input[type="password"]:read-only {
+    background-color: linen;       
+}
+
 input[type="email"] { 
     width: 240px; 
     padding: 4px; 
@@ -164,6 +179,16 @@ input[type="email"] {
 }
 
 input[type="email"]:focus {
+    border: 2.5px solid darkorange;        
+}
+
+input[type="password"] { 
+    width: 240px; 
+    padding: 4px; 
+    outline: none;    
+}
+
+input[type="password"]:focus {
     border: 2.5px solid darkorange;        
 }
 
@@ -192,4 +217,50 @@ select.option:focus {
 .p_form {
     text-align: left;
     margin: 2px;
+}
+
+.error {
+    color: crimson;
+    font-weight: bold;    
+}
+
+.correcto {
+    color: darkgreen;
+    font-weight: bold;
+}
+
+.escondido {
+    display: none;
+}
+
+.menu li {
+  position: relative; /* Necesario para posicionar el submenú */
+}
+
+.submenu {
+  display: none; /* Oculta el submenú */
+  position: absolute; /* Posiciona el submenú respecto al <li> padre */
+  top: 100%; /* Debajo del elemento padre */
+  left: 0%;
+  background-color: #f9f9f9;
+  box-shadow: 0px 8px 16px rgba(0,0,0,0.2);
+  border-radius: 5px;
+  border: 1px solid #010481;
+  z-index: 1;
+  list-style: none;
+  padding: 0;
+  min-width: 140px;
+}
+
+.submenu li a {
+  color: #010481;
+  font-size: 14px;
+  text-align: center;
+  padding: 12px 12px;
+  text-decoration: none;
+  display: block;
+}
+
+.menu li:hover > .submenu {
+  display: block; /* Muestra el submenú */
 }

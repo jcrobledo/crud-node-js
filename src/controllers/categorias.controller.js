@@ -1,7 +1,7 @@
 const model = require("../models/category");
 
 const createCategoria = (req, res) => {
-  res.render("categorias/create", { title: "Crear Categoría" });
+  res.render("categorias/create", { title: "Crear Categoría", layout: "./layouts/layout-private", username: req.user.username });
 };
 
 const storeCategoria = async (req, res) => {
@@ -22,7 +22,7 @@ const storeCategoria = async (req, res) => {
 const index = async (req, res) => {
   try {
     const categorias = await model.findAll();
-    res.render("categorias/index", { title: "Categorías", categorias });
+    res.render("categorias/index", { title: "Categorías", categorias, layout: "./layouts/layout-private", username: req.user.username });
   } catch (error) {
     return res.status(500).send("Error al listar todas las categorías");
   }
@@ -35,10 +35,10 @@ const show = async (req, res) => {
     if (!categoria) {
       return res.status(404).send("Categoría no encontrada");
     }
-    res.render("categorias/show", { title: "Detalle de Categoría", categoria });
+    res.render("categorias/show", { title: "Detalle de Categoría", categoria,layout: "./layouts/layout-private", username: req.user.username });
   } catch (error) {
     console.error("Error al obtener la categoría:", error);
-    res.status(500).send("Error al obtener la categoría");
+    return res.status(500).send("Error al obtener la categoría");
   }
 };
 
@@ -49,7 +49,7 @@ const updateCategoria = (req, res) => {
     title: req.query.title,
     description: req.query.description,
   };
-  res.render(`categorias/update`, { title: "Actualizar Categoría", categoria });
+  res.render(`categorias/update`, { title: "Actualizar Categoría", categoria, layout: "./layouts/layout-private", username: req.user.username });
 };
 
 const update = async (req, res) => {
@@ -66,7 +66,7 @@ const update = async (req, res) => {
     res.redirect("/categorias");
   } catch (error) {
     console.error("Error al actualizar la categoría:", error);
-    res.status(500).send("Error al actualizar la categoría");
+    return res.status(500).send("Error al actualizar la categoría");
   }
 };
 
@@ -77,7 +77,7 @@ const deleteCategoria = (req, res) => {
     title: req.query.title,
     description: req.query.description,
   };
-  res.render("categorias/delete", { title: "Eliminar Categoría", categoria });
+  res.render("categorias/delete", { title: "Eliminar Categoría", categoria, layout: "./layouts/layout-private", username: req.user.username });
 };
 
 const deleteID = async (req, res) => {
@@ -87,7 +87,7 @@ const deleteID = async (req, res) => {
     res.redirect("/categorias");
   } catch (error) {
     console.error("Error al eliminar la categoría:", error);
-    res.status(500).send("Error al eliminar la categoría");
+    return res.status(500).send("Error al eliminar la categoría");
   }  
 };
 

@@ -1,2 +1,8 @@
-         <h1>Inicio</h1>
+        <% if (typeof username == 'undefined') {  %>
+            <h1>Inicio</h1>
+        <% } else {  %>
+            <h1>Bienvenido <%= username %></h1>
+        <% }; %>
+         
+         
     

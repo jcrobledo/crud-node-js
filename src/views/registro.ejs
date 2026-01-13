@@ -1,0 +1,35 @@
+<h1>Registro de Nuevos Usuarios</h1>
+
+<form id="myForm" action="/registro" method="post">
+    <p class="p_form">
+        <label for="nombre">Nombre de Usuario: </label>
+    </p>
+        <input type="text" name="nombre" id="nombre" required>
+    
+    <p class="p_form">
+        <label for="password">Contraseña: </label>
+    </p>
+        <input type="password" name="password" id="password" autocomplete="off" required>    
+   
+    <br>
+    <br>
+   
+    <button class="btEnviar" type="submit">Alta Nuevo Usuario</button>     
+
+    <% if ((enviado == 'true') && (visible == 'true')) { %>
+    <p class="correcto">Usuario registrado correctamente</p>
+    <% } else if ((visible == 'true') && (existeUsu == 'true')) { %>
+        <p class="error">El usuario ya está registrado. Vaya a iniciar sesión</p>
+        <% } else if (error == 'true') { %> 
+            <p class="error">Error al registrarse. Inténtelo de nuevo más tarde</p>
+            <% } %>
+   
+</form>
+
+<p>¿Ya estás registrado? <a href="/login">Iniciar sesión</a></p>
+
+<br>
+
+<div align="center">
+    <button onclick="location.href='/'">Volver al Inicio</button>
+</div>

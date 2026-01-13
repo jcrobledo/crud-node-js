@@ -14,8 +14,10 @@ const index = async (req, res) => {
 
     return res.render("productos/index", {
       title: "Productos",
+      layout: "./layouts/layout-private",
       productos,
       categoriaMap,
+      username: req.user.username,
     });
   } catch (error) {
     console.error("Error al listar todos los productos:", error);
@@ -31,7 +33,7 @@ const show = async (req, res) => {
     if (!producto) {
       return res.status(404).send("Producto no encontrado");
     }
-    res.render("productos/show", { title: "Producto", producto, categoria });
+    res.render("productos/show", { title: "Producto", producto, categoria, layout: "./layouts/layout-private", username: req.user.username });
   } catch (error) {
     console.error("Error al obtener el producto:", error);
     res.status(500).send("Error al obtener el producto");
@@ -41,7 +43,7 @@ const show = async (req, res) => {
 const create = async (req, res) => {
   try {
     const categorias = await modelCat.findAll();
-    res.render("productos/create", { title: "Crear Producto", categorias });
+    res.render("productos/create", { title: "Crear Producto", categorias, layout: "./layouts/layout-private", username: req.user.username });
   } catch (error) {
     console.error("Error al cargar categorías:", error);
     return res.status(500).send("Error al cargar categorías");
@@ -73,7 +75,7 @@ const updateProducto = async (req, res) => {
   };  
   try {
     const categorias = await modelCat.findAll();
-    res.render(`productos/update`, { title: "Actualizar Producto", producto, categorias });
+    res.render(`productos/update`, { title: "Actualizar Producto", producto, categorias, layout: "./layouts/layout-private", username: req.user.username });
   } catch (error) {
     console.error("Error al cargar categorías:", error);
     return res.status(500).send("Error al cargar categorías");
@@ -105,7 +107,7 @@ const deleteProducto = async (req, res) => {
     description: req.query.description,
     category: req.query.categoria
   };
-  res.render(`productos/delete`, { title: "Eliminar Producto", producto });
+  res.render(`productos/delete`, { title: "Eliminar Producto", producto, layout: "./layouts/layout-private", username: req.user.username });
 };
 
 const deleteID = async (req, res) => {

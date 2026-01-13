@@ -1,7 +1,14 @@
+const jwt = require('jsonwebtoken');
 const nodemailer = require("nodemailer");
 
 const index = (req, res) => {
   res.render("contacto", { title: "Contacto" });
+};
+
+const indexLog = (req, res) => {
+  const token = req.cookies.authToken;
+      const verified = jwt.verify(token, process.env.JWT_SECRET);  
+  res.render("contacto", { title: "Contacto", layout: "./layouts/layout-private", logado: true, username: verified.username });
 };
 
 const submit = async (req, res) => {
@@ -27,14 +34,15 @@ const submit = async (req, res) => {
   } catch (error) {
     console.error("Error al enviar el correo:", error);
     res.status(500).render("contacto", { title: "Contacto", enviado: false, visible: true, deshabilitado: true,
-      nombre: req.body.nombre, correo: req.body.correo, mensaje: req.body.mensaje });
+      nombre: req.body.nombre, correo: req.body.correo, mensaje: req.body.mensaje, logado: req.body.logado });
   }
 
   res.render("contacto", { title: "Contacto", enviado: true, visible: true, deshabilitado: true, 
-    nombre: req.body.nombre, correo: req.body.correo, mensaje: req.body.mensaje });
+    nombre: req.body.nombre, correo: req.body.correo, mensaje: req.body.mensaje, logado: req.body.logado });
 };
 
 module.exports = {
   index,
+  indexLog,
   submit,
 };
