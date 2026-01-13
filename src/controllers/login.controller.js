@@ -11,10 +11,10 @@ const index = (req, res) => {
     if (req.query) {
       incorrecto = req.query.incorrecto;
       error = req.query.error;
-      return res.render("login", { title: "Iniciar Sesión", incorrecto, error });
+      return res.render("login/login", { title: "Iniciar Sesión", incorrecto, error });
     };
 
-    res.render("login", { title: "Iniciar Sesión", incorrecto: "", error: "" }); 
+    res.render("login/login", { title: "Iniciar Sesión", incorrecto: "", error: "" }); 
 };
 
 const auth = async (req, res) => {
@@ -57,7 +57,7 @@ const auth = async (req, res) => {
     
   } catch (error) {
     console.error("Error general de acceso:", error);   
-    return res.redirect('/login?incorrecto=&error=true');
+    return res.redirect('login/login?incorrecto=&error=true');
   }
 };
 
@@ -72,9 +72,9 @@ const logout = (req, res) => {
         maxAge: 1000 * 60 * 60, // Tiempo de vida de la cookie (1 hora) 1ms *60*60
         path: "/", 
     });
-    return res.render('logout', { title: "Login Correcto", layout: "./layouts/layout-public" });
+    return res.render('login/logout', { title: "Login Correcto", layout: "./layouts/layout-public" });
   } else {
-      res.render('logout', { title: "Login Correcto", layout: "./layouts/layout-public" });
+      res.render('login/logout', { title: "Login Correcto", layout: "./layouts/layout-public" });
   };
   
 };
