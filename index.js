@@ -1,22 +1,23 @@
 require("dotenv").config(); // requerimos el módulo para leer las variables de entorno
 
+const https = require('https'); // para HTTPS
+const fs = require('fs');       // para HTTPS
+
 const express = require("express");
 const app = express();
+
+const options = {
+    key: fs.readFileSync(process.env.SSL_KEY_PATH + '/localhost+1-key.pem'), // para HTTPS
+    cert: fs.readFileSync(process.env.SSL_KEY_PATH + '/localhost+1.pem')     // para HTTPS
+}
+
 const path = require("path");
 const layouts = require("express-ejs-layouts");
 const methodOverride = require("method-override");
 const cookieParser = require('cookie-parser');
 const cors = require('cors');
-// const jwt = require('express-jwt');
 const PORT = process.env.PORT || 3001;
-
-// app.use(
-//   jwt(
-//   { 
-//     secret: process.env.JWT_SECRET, 
-//     algorithms: ['HS256'],
-//     getToken: req => req.cookies.token
-//   }));
+const PORTSSL = process.env.PORTSSL;
 
 app.use(cors()); // para habilitar el Intercambio de Recursos de Origen Cruzado
 app.use(cookieParser()); // para poder manejar cookies
@@ -45,3 +46,7 @@ app.use("/registro", require('./src/routes/registro.router'));
 
 
 app.listen(PORT, () => console.log(`http://localhost:${PORT}`));
+
+https.createServer(options, app).listen(PORTSSL, () => {
+    console.log(`https://localhost:${PORTSSL}`);
+});
