@@ -16,8 +16,12 @@ const index = (req, res) => {
 
 const indexLog = (req, res) => {
     const token = req.cookies.authToken;
-    const verified = jwt.verify(token, process.env.JWT_SECRET);    
-    res.render("index", { title: "Inicio", layout: "./layouts/layout-private", username: verified.username });
+    if (token) {
+        const verified = jwt.verify(token, process.env.JWT_SECRET);    
+        return res.render("index", { title: "Inicio", layout: "./layouts/layout-private", username: verified.username });
+    } else {
+        return res.redirect("/");
+    };    
 };
 
 const private = (req, res) => {

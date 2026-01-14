@@ -4,12 +4,14 @@
     <p class="p_form">
         <label for="nombre">Nombre de Usuario: </label>
     </p>
-        <input type="text" name="nombre" id="nombre" required>
+        <input type="text" name="nombre" id="nombre" required
+        onfocus="document.getElementById('ocultar').hidden = true">
     
     <p class="p_form">
         <label for="password">Contraseña: </label>
     </p>
-        <input type="password" name="password" id="password" autocomplete="off" required>    
+        <input type="password" name="password" id="password" autocomplete="off" required
+        onfocus="document.getElementById('ocultar').hidden = true">    
    
     <br>
     <br>
@@ -17,9 +19,9 @@
     <button class="btEnviar" type="submit">Iniciar Sesión</button>
 
     <% if (incorrecto == 'true') { %>
-    <p class="error">Usuario o contraseña incorrectos</p>
+    <p class="error" id="ocultar">Usuario o contraseña incorrectos</p>
     <% } else if (error == 'true') { %>
-        <p class="error">Error al inciar sesión. Inténtelo de nuevo más tarde</p>
+        <p class="error" id="ocultar">Error al inciar sesión. Inténtelo de nuevo más tarde</p>
         <% } %>
     
    

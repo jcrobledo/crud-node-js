@@ -192,6 +192,17 @@ input[type="password"]:focus {
     border: 2.5px solid darkorange;        
 }
 
+.validaRegistro:valid {
+  color: darkgreen;
+  font-weight: bold;
+  border: 2px solid darkgreen;
+}
+
+.validaRegistro:invalid {
+  color:darkred;
+  font-weight: bold;  
+}
+
 textarea {
     field-sizing: content;  
     width: 237px;
