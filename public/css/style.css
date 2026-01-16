@@ -275,3 +275,14 @@ select.option:focus {
 .menu li:hover > .submenu {
   display: block; /* Muestra el submenú */
 }
+
+.login-cert {
+    background-color: lightgreen;
+    color:darkgreen;
+    padding: 15px;    
+    border-radius: 5px;
+    border:darkgreen 2px solid;
+    text-align: center;
+    width: fit-content;
+    margin: 0px auto 20px auto;
+}

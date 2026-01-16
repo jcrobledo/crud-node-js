@@ -30,6 +30,7 @@ const store = async (req, res) => {
   if (!result.error) {
 
     const nuevoUsuario = {
+      dni: req.body.dni,
       nombre: req.body.nombre,
       password: req.body.password,
       createdAt: new Date(),
@@ -39,8 +40,9 @@ const store = async (req, res) => {
     try {
 
       const query = await model.findById(nuevoUsuario.nombre);
+      const queryDni = await model.findByDni(nuevoUsuario.dni);
 
-      if (!query) {
+      if (!queryDni && !query) {
         nuevoUsuario.password = await bcrypt.hash(nuevoUsuario.password, 10);
         const result = await model.store(nuevoUsuario);
         return res.redirect('/registro?enviado=true&visible=true&existeUsu=false&error=');

@@ -2,13 +2,13 @@ const jwt = require('jsonwebtoken');
 const nodemailer = require("nodemailer");
 
 const index = (req, res) => {
-  res.render("contacto", { title: "Contacto" });
+  res.render("contacto", { title: "Contacto", nombre: "" });
 };
 
 const indexLog = (req, res) => {
   const token = req.cookies.authToken;
       const verified = jwt.verify(token, process.env.JWT_SECRET);  
-  res.render("contacto", { title: "Contacto", layout: "./layouts/layout-private", logado: true, username: verified.username });
+  res.render("contacto", { title: "Contacto", nombre: "", layout: "./layouts/layout-private", logado: true, username: verified.username });
 };
 
 const submit = async (req, res) => {
