@@ -7,8 +7,13 @@ const index = (req, res) => {
 
 const indexLog = (req, res) => {
   const token = req.cookies.authToken;
-      const verified = jwt.verify(token, process.env.JWT_SECRET);  
-  res.render("contacto", { title: "Contacto", nombre: "", layout: "./layouts/layout-private", logado: true, username: verified.username });
+  if (token) {
+    const verified = jwt.verify(token, process.env.JWT_SECRET);  
+    return res.render("contacto", { title: "Contacto", nombre: "", layout: "./layouts/layout-private", logado: true, username: verified.username });
+  } else {
+    return res.render("contacto", { title: "Contacto", nombre: "" });
+  };
+  
 };
 
 const submit = async (req, res) => {

@@ -48,8 +48,8 @@ const vTokenCert = require("./src/middlewares/verify-cert");
 const mainRouter = require('./src/routes/main.router');
 app.use(mainRouter);
 
-app.use("/productos",vToken.verifyToken, require('./src/routes/productos.router'));  // Esta línea es un resumen de las dos anteriores
-app.use("/contacto" ,require('./src/routes/contacto.router'));
+app.use("/productos", vToken.verifyToken, require('./src/routes/productos.router'));  // Esta línea es un resumen de las dos anteriores
+app.use("/contacto", require('./src/routes/contacto.router'));
 app.use("/categorias", vToken.verifyToken, require('./src/routes/categorias.router'));
 app.use("/login", require('./src/routes/login.router'));
 app.use("/loginCert", changePortX509.changePortX509, vTokenCert.verifyCert, require('./src/routes/loginCert.router'));

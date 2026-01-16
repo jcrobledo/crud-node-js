@@ -131,10 +131,12 @@ const logout = (req, res) => {
       secure: process.env.NODE_ENV === 'development', // Solo HTTPS en === 'production'
       maxAge: 1000 * 60 * 60, // Tiempo de vida de la cookie (1 hora) 1ms *60*60
       path: "/",
-    });
+    });    
+    delete req.session; // Destruye la sesión
     return res.render('login/logout', { title: "Logout Correcto", layout: "./layouts/layout-public" });
   } else {
-    res.render('login/logout', { title: "Logout Correcto", layout: "./layouts/layout-public" });
+    delete req.session; // Destruye la sesión
+    return res.render('login/logout', { title: "Logout Correcto", layout: "./layouts/layout-public" });
   };
 
 };
