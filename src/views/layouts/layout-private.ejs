@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title><%= title %></title>
     <link rel="stylesheet" href="/css/style.css" />
+    <link rel="icon" href="" />
   </head>
   <body>
     <%- include('../partials/header-private') %>
@@ -12,3 +13,11 @@
     <%- include('../partials/footer') %>
   </body>
 </html>
+
+<script>
+    window.onpageshow = function(event) {
+        if (event.persisted) {
+            window.location.reload();
+        }
+    };    
+</script>

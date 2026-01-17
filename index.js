@@ -6,6 +6,13 @@ const fs = require('fs');       // para HTTPS
 const express = require("express");
 const app = express();
 
+app.use((req, res, next) => {
+    res.set('Cache-Control', 'no-store, no-cache, must-revalidate, private'); // No almacenar la página en caché ni en el historial
+    res.set('Pragma', 'no-cache');  // Para compatibilidad con HTTP/1.0
+    res.set('Expires', '0'); // Para compatibilidad con navegadores antiguos
+    next();
+});
+
 const baseOptions = {
     key: fs.readFileSync(process.env.SSL_KEY_PATH + '/localhost+1-key.pem'), // para HTTPS
     cert: fs.readFileSync(process.env.SSL_KEY_PATH + '/localhost+1.pem'),     // para HTTPS    
@@ -45,9 +52,7 @@ const vToken = require("./src/middlewares/verify-token");
 const changePortX509 = require("./src/middlewares/change-port-X509");
 const vTokenCert = require("./src/middlewares/verify-cert");
 
-const mainRouter = require('./src/routes/main.router');
-app.use(mainRouter);
-
+app.use("/", require('./src/routes/main.router'));
 app.use("/productos", vToken.verifyToken, require('./src/routes/productos.router'));  // Esta línea es un resumen de las dos anteriores
 app.use("/contacto", require('./src/routes/contacto.router'));
 app.use("/categorias", vToken.verifyToken, require('./src/routes/categorias.router'));

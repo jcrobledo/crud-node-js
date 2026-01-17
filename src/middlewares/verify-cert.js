@@ -1,11 +1,16 @@
 const crypto = require('crypto');
+const { buffer } = require('stream/consumers');
 
 const verifyCert = (req, res, next) => {    
 
-    const clientCertReq = req.socket.getPeerCertificate(true).raw;
-    
-    const clientCert = new crypto.X509Certificate(clientCertReq);    
-    
+    const bufferCert = req.socket.getPeerCertificate(true);
+
+    if (bufferCert.raw === undefined) {
+        return res.status(401).render('login/cert_Empty', { title: "Certificado no proporcionado", layout: "./layouts/layout-public" });
+    };
+
+    const clientCertReq = req.socket.getPeerCertificate(true).raw;    
+    const clientCert = new crypto.X509Certificate(clientCertReq);      
     console.log('Certificado del cliente recibido:', clientCert);    
 
     if (!clientCert) {
