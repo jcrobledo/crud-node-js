@@ -1,7 +1,7 @@
 const crypto = require('crypto');
-const { buffer } = require('stream/consumers');
+const { getCertStatus } = require('easy-ocsp');
 
-const verifyCert = (req, res, next) => {    
+const verifyCert = async (req, res, next) => {    
 
     const bufferCert = req.socket.getPeerCertificate(true);
 
@@ -16,6 +16,40 @@ const verifyCert = (req, res, next) => {
     if (!clientCert) {
         return res.status(401).render('login/cert_Empty', { title: "Certificado no proporcionado", layout: "./layouts/layout-public" });
     }
+
+    let resultOCSP = {};
+
+    try {  
+        // comprobación OCSP        
+        // La función extrae automáticamente la URL del respondedor OCSP
+        //  y el certificado del emisor del propio certificado de usuario.        
+        const ocspResult = await getCertStatus(clientCertReq); 
+
+        console.log('Resultado OCSP:', ocspResult);
+
+        if (ocspResult.status === 'good') {
+            resultOCSP = {
+                valido: true, 
+                mensaje: 'Certificado activo y válido'
+            };            
+        } else if (ocspResult.status === 'revoked') {
+            resultOCSP = { 
+                valido: false, 
+                estado: "revocado",
+                mensaje: 'Certificado REVOCADO',
+                motivo: ocspResult.revocationReason 
+            };
+        } else {
+            resultOCSP = { 
+                valido: false, 
+                estado: 'desconocido',
+                mensaje: 'Estado del Certificado Desconocido' 
+            };
+        }
+    } catch (error) {        
+        console.error('Error al procesar el certificado (OCSP):', error);
+        res.status(400).render('login/cert_Error', { title: "Error al procesar el certificado", layout: "./layouts/layout-public" });
+    };    
 
     try {
         
@@ -54,7 +88,8 @@ const verifyCert = (req, res, next) => {
             rutaOCSP: rutaOCSP,            
             validoDesde: clientCert.validFrom,
             validoHasta: clientCert.validTo,
-            numeroSerie: clientCert.serialNumber
+            numeroSerie: clientCert.serialNumber,
+            resultOCSP
         };
 
         req.user = { userCert }; 

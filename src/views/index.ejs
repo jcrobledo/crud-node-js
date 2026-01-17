@@ -3,6 +3,11 @@
         <% } else {  %>
             <h1>Bienvenido <%= username %></h1>
         <% }; %>
+
+        <% if (typeof mensajeOCSP != 'undefined') {  %>
+            <h3><%= mensajeOCSP %></h3>
+        <% }; %>
+            
          
          
     

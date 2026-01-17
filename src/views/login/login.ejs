@@ -26,8 +26,9 @@
     <p class="error" id="ocultar">Usuario o contraseña incorrectos</p>
     <% } else if (error == 'true') { %>
         <p class="error" id="ocultar">Error al inciar sesión. Inténtelo de nuevo más tarde</p>
-        <% } %>
-    
+        <% } else if  (noExiste == 'true') { %>
+            <p class="error" id="ocultar">El usuario no está dado de alta en el sistema</p>
+            <% }; %>    
    
 </form>
 

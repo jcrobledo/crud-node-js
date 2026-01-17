@@ -1,2 +1,7 @@
          <h1>Error al VALIDAR o PROCESAR el certificado</h1>
-    
+
+         <% if (typeof mensajeOCSP != 'undefined') {  %>
+            <h3><%= mensajeOCSP %></h3>
+        <% }; %>
+
+         

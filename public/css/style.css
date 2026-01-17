@@ -19,6 +19,11 @@ h2 {
     text-align: center;
 }
 
+h3 {
+    color: darkorange;
+    text-align: center;
+}
+
 .products {
     display: grid;
     grid-template-columns: repeat(3, 1fr);

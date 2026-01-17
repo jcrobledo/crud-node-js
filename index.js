@@ -22,7 +22,7 @@ const certOptions = {
     key: fs.readFileSync(process.env.SSL_KEY_PATH + '/localhost+1-key.pem'), // para HTTPS
     cert: fs.readFileSync(process.env.SSL_KEY_PATH + '/localhost+1.pem'),     // para HTTPS
     requestCert: true, // Solicita el certificado al cliente
-    rejectUnauthorized: false // Rechaza si el certificado no es válido NORMALMENTE TRUE
+    rejectUnauthorized: false // Rechaza si el certificado no es válido NORMALMENTE TRUE; si queremos tratar OCSP tiene que ser FALSE
 }
 
 const path = require("path");
