@@ -24,12 +24,7 @@ const indexLog = (req, res) => {
     };    
 };
 
-const private = (req, res) => {
-    res.sendFile(path.resolve(__dirname, '../../private/index.html'));
-};
-
 module.exports = {
     index, 
-    indexLog,
-    private
+    indexLog,    
 };

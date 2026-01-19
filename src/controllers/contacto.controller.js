@@ -30,7 +30,7 @@ const submit = async (req, res) => {
   try {
     const info = await transporter.sendMail({
       from: `"${req.body.nombre}" <${req.body.correo}>`, // dirección de quien envía el formulario
-      to: "bar@example.com, baz@example.com",
+      to: "jcrm-costero@alwaysdata.net",
       subject: "Formulario de Contacto",
       text: req.body.mensaje, // plain‑text body
       html: `<pre>${req.body.mensaje}</pre>`, // HTML body

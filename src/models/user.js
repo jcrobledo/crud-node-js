@@ -1,9 +1,9 @@
 const pool = require('./mysql');
 
 const store = async (usuario) => {
-    const sql = 'INSERT INTO users (dni, user, password, createdAt, updatedAt) VALUES (?, ?, ?, ?, ?)';
+    const sql = 'INSERT INTO users (dni, user, email, password, createdAt, updatedAt) VALUES (?, ?, ?, ?, ?, ?)';
     try {
-        const [result] = await pool.execute(sql, [usuario.dni, usuario.nombre, usuario.password, usuario.createdAt, usuario.updateAt]);
+        const [result] = await pool.execute(sql, [usuario.dni, usuario.nombre, usuario.email, usuario.password, usuario.createdAt, usuario.updateAt]);
         return result.insertId;        
     } catch (error) {
         throw error;

@@ -1,0 +1,111 @@
+<h1>DATOS DEL FICHAJE</h1>    
+<h3 class="relojH3"><%= fecha %></h3>
+<h3 class="relojH3"><%= hora %></h3>
+<div align="center" style="margin: 25px;">
+    <button id="btCert" onclick="">Fichar con Certificado</button>
+    <button id="btCred" onclick="mostrarFormulario()">Fichar con credenciales</button>
+</div>
+
+<form id="myForm" action="" method="post">
+    <p class="p_form">
+        <label for="nombre">Nombre de Usuario: </label>
+    </p>
+        <input type="text" name="nombre" id="nombre" required
+        onfocus="document.getElementById('ocultar')?.classList.add('escondido');">
+    
+    <p class="p_form">
+        <label for="password">Contraseña: </label>
+    </p>
+        <input type="password" name="password" id="password" autocomplete="off" required
+        onfocus="document.getElementById('ocultar')?.classList.add('escondido');">    
+   
+    <br>
+    <br>
+
+    <input type="hidden" name="fecha" id="fecha" value=<%= fecha %>>
+    <input type="hidden" name="hora" id="hora" value=<%= hora %>>    
+   
+    <button class="btEnviar" type="submit">Iniciar Sesión</button>   
+
+    <% if (incorrecto == 'true') { %>
+    <p class="error" id="ocultar">Usuario o contraseña incorrectos</p>
+    <% } else if (error == 'true') { %>
+        <p class="error" id="ocultar">Error al inciar sesión. Inténtelo de nuevo más tarde</p>
+        <% } else if  (noExiste == 'true') { %>
+            <p class="error" id="ocultar">El usuario no está dado de alta en el sistema</p>
+            <% }; %>    
+
+</form>
+
+<form id="myFormKey" action="/codigoQR/urlTemporalCheckKey" method="post">
+    <p class="p_form">
+        <label for="nombreKey">Clave de Comprobación: </label>
+    </p>
+        <input type="text" name="nombreKey" id="nombreKey" required>      
+   
+    <br>
+    <br>
+
+    <input type="hidden" name="nombre" id="nombre" value=<%= nombre %>>
+    <input type="hidden" name="dni" id="dni" value=<%= dni %>>
+    <input type="hidden" name="user" id="user" value=<%= user %>>
+    <input type="hidden" name="fecha" id="fecha" value=<%= fecha %>>
+    <input type="hidden" name="hora" id="hora" value=<%= hora %>>    
+   
+    <button class="btEnviar" type="submit">Guardar fichaje</button>    
+    
+    <p class="correcto" id="textClave">Clave enviada por correo electrónico</p>
+
+</form>
+
+<h2 class="correcto" id="mgsFichajeOK">Fichaje guardado CORRECTAMENTE</h2>
+<h2 class="error" id="mgsFichajeKO">Clave INCORRECTA. vuelva a intentarlo</h2>
+
+
+<script>
+function mostrarFormulario() {  
+  document.getElementById('myForm').style.display = 'block';
+}
+
+const escondido = '<%= escondido %>';
+
+if (escondido == 'true') {
+    document.getElementById('myForm').classList.add('escondido');
+}else {
+    document.getElementById('myForm').classList.remove('escondido');
+};
+
+const escondidoBT = '<%= escondidoBT %>';
+
+if (escondidoBT == 'true') {
+    document.getElementById('btCert').classList.add('escondido');
+    document.getElementById('btCred').classList.add('escondido');
+}else {
+    document.getElementById('btCert').classList.remove('escondido');
+    document.getElementById('btCred').classList.remove('escondido');
+};
+
+const escondidoFkey = '<%= escondidoFkey %>';
+
+if (escondidoFkey == 'true') {
+    document.getElementById('myFormKey').classList.add('escondido');  
+    document.getElementById('textClave').classList.add('escondido');   
+}else {
+    document.getElementById('myFormKey').classList.remove('escondido'); 
+    document.getElementById('textClave').classList.remove('escondido');    
+};
+
+const fichajeOK = '<%= fichajeOK %>';
+
+if (fichajeOK == '') {
+    document.getElementById('mgsFichajeOK').classList.add('escondido');  
+    document.getElementById('mgsFichajeKO').classList.add('escondido');   
+}else if (fichajeOK == 'true') {
+    document.getElementById('mgsFichajeOK').classList.remove('escondido'); 
+    document.getElementById('mgsFichajeKO').classList.add('escondido');
+} else {
+    document.getElementById('mgsFichajeOK').classList.add('escondido'); 
+    document.getElementById('mgsFichajeKO').classList.remove('escondido');
+};
+
+</script>

@@ -9,13 +9,31 @@
     padding: 0;
  }
 
+ .imageQR {
+    display: block;
+    margin: 30px auto;
+ }
+
+ #reloj {
+    margin: auto;
+    text-align: center;
+    color:darkorange;
+    font-weight: bold; 
+    font-size: 18px;   
+ }   
+
+ .relojH3 {
+    margin-top: 0;
+    margin-bottom: 0;
+ }
+
  h1 {
     color:darkorange;
     text-align: center;
 }
 
 h2 {
-    color: darkblue;
+    color: darkorange;
     text-align: center;
 }
 

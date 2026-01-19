@@ -59,6 +59,7 @@ app.use("/categorias", vToken.verifyToken, require('./src/routes/categorias.rout
 app.use("/login", require('./src/routes/login.router'));
 app.use("/loginCert", changePortX509.changePortX509, vTokenCert.verifyCert, require('./src/routes/loginCert.router'));
 app.use("/registro", require('./src/routes/registro.router'));
+app.use("/codigoQR", require('./src/routes/qr-url-din.router'));
 
 app.listen(PORT, () => console.log(`http://localhost:${PORT}`));
 

@@ -4,7 +4,7 @@
 <p><strong>Categoría:</strong> <%= categoria.title %></p>
 <p><strong>Descripción:</strong> <%= producto.description %></p>
 <div align="center">
-  <button onclick="history.back()">Volver a Productos</button>
+  <button onclick="location.href='/productos'">Volver a Productos</button>
   <button onclick="location.href='/productos/<%= producto.id %>/update?title=<%= producto.title %>&description=<%= producto.description %>&categoria=<%= categoria.title %>'">Editar Producto</button>
   <button onclick="location.href='/productos/<%= producto.id %>/delete?title=<%= producto.title %>&description=<%= producto.description %>&categoria=<%= categoria.title %>'">Eliminar Producto</button>
 </div>

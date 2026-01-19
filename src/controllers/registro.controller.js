@@ -32,6 +32,7 @@ const store = async (req, res) => {
     const nuevoUsuario = {
       dni: req.body.dni,
       nombre: req.body.nombre,
+      email: req.body.email,
       password: req.body.password,
       createdAt: new Date(),
       updateAt: new Date(),
