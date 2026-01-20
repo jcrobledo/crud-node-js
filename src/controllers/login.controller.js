@@ -7,12 +7,12 @@ const index = (req, res) => {
 
   let incorrecto = "";
   let error = "";
-  let noExiste= "";
+  let noExiste = "";
 
   if (req.query) {
     incorrecto = req.query.incorrecto;
     error = req.query.error;
-    noExiste= req.query.noExiste;
+    noExiste = req.query.noExiste;
     return res.render("login/login", { title: "Iniciar Sesión", incorrecto, error, noExiste });
   };
 
@@ -72,9 +72,21 @@ const auth = async (req, res) => {
 
 };
 
-const authCert = async (req, res) => {
+const authCert = async (req, res) => {  
 
-  console.log("Reg.user desde authCert: ", req.user);
+  if (req.user.datos.tag == "NoHayCertificado") {    
+    return res.status(401).render('login/cert_Empty', { title: "Certificado no proporcionado", layout: "./layouts/layout-public" });
+  };
+
+  if (req.user.datos.tag == "NoHayOCSP") {    
+    console.error('Error al procesar el certificado (OCSP):', req.user.datos.error);
+    return res.status(400).render('login/cert_Error', { title: "Error al procesar el certificado", layout: "./layouts/layout-public", mensajeOCSP: req.user.datos.error });
+  };
+
+  if (req.user.datos.tag == "ErrorProceso") {
+    console.error('Error al procesar el certificado:', req.user.datos.error);
+    return res.status(400).render('login/cert_Error', { title: "Error al procesar el certificado", layout: "./layouts/layout-public" });
+  };  
 
   const usuarioAuth = {
     dni: req.user.userCert.dni,
