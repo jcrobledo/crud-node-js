@@ -4,14 +4,13 @@ const modelMark = require("../models/mark");
 const { validationResult } = require('express-validator');
 const QRCode = require('qrcode');
 const nodemailer = require("nodemailer");
-const path = require('path');
 
-let clave = '';
+const index = async (req, res) => {   
 
-const index = async (req, res) => {
+    console.log("Prefijo desde INDEX CodigoQR: ", req.user);
 
     try {
-        const urlTemp = "https://192.168.31.100/codigoQR/urlTemporal";
+        const urlTemp = `https://192.168.31.100/codigoQR/urlTemporal/${req.user}`;
 
         const qrCodeBuffer = await QRCode.toBuffer(urlTemp, {
             errorCorrectionLevel: 'Q',
@@ -55,7 +54,20 @@ const actualTime = (req, res) => {
     res.json({ hora });
 };
 
-const urlTemporal = (req, res) => {
+const urlTemporal = (req, res) => {         
+    
+    const ruta = req.path.split("/");     
+
+    if (global.dinURL === undefined) {
+        return res.render('QRurlDin/errorGeneral', { title: "Fichajes: Error General", layout: "./layouts/layout-mark" });
+    } else if (ruta[2] === global.dinURL) {
+        const { sufijo } = global.dinURL; 
+    } else {
+        return res.render('QRurlDin/errorGeneral', { title: "Fichajes: Error General", layout: "./layouts/layout-mark" });
+    };
+    
+    console.log("Prefijo desde controller URLTEMPORAL global.dinURL: ", global.dinURL); 
+    
 
     let incorrecto = "";
     let error = "";
@@ -90,14 +102,16 @@ const urlTemporal = (req, res) => {
         fichajeOK = req.query.fichajeOK;
         noUsuCert = req.query.noUsuCert;
 
-        return res.render('QRurlDin/urlTemporal', { title: "URL para Fichajes", layout: "./layouts/layout-mark", fecha, hora, incorrecto, error, noExiste, escondido, escondidoBT, escondidoFkey, nombre, dni, user, fichajeOK, noUsuCert });
+        return res.render('QRurlDin/urlTemporal', { title: "URL para Fichajes", layout: "./layouts/layout-mark", fecha, hora, incorrecto, error, noExiste, escondido, escondidoBT, escondidoFkey, nombre, dni, user, fichajeOK, noUsuCert, urlDin: global.dinURL, dinamic: "" });
     };
-    res.render('QRurlDin/urlTemporal', { title: "URL para Fichajes", layout: "./layouts/layout-mark", fecha, hora, incorrecto: "", error: "", noExiste: "", escondido: "true", escondidoBT: "false", escondidoFkey: "true", nombre: "", dni: "", user: "", fichajeOK: "", noUsuCert: "" });
+    res.render('QRurlDin/urlTemporal', { title: "URL para Fichajes", layout: "./layouts/layout-mark", fecha, hora, incorrecto: "", error: "", noExiste: "", escondido: "true", escondidoBT: "false", escondidoFkey: "true", nombre: "", dni: "", user: "", fichajeOK: "", noUsuCert: "", urlDin: global.dinURL, dinamic: "" });
 };
 
 const auth = async (req, res) => {
 
-    const result = validationResult(req);
+    console.log("Prefijo desde controller AUTH global.dinURL: ", global.dinURL); 
+
+    const result = validationResult(req);    
 
     if (!result.error) {
 
@@ -124,16 +138,12 @@ const auth = async (req, res) => {
                 const loginCorrecto = await bcrypt.compare(usuarioAuth.password, query.password);
 
                 if (loginCorrecto) {
+                    
+                    console.log("Clave generada en auth: ", req.user, "para el usuario: ", query.user, " para la sesión: ", global.dinURL);
+                    const dinKEYHash = await bcrypt.hash(req.user, 10);
+                    console.log("dinKEYHash hasheado: ", dinKEYHash);
 
-                    const caracteres = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
-                    clave = '';
-                    for (let i = 0; i < 8; i++) {
-                        clave += caracteres.charAt(Math.floor(Math.random() * caracteres.length));
-                    }
-
-                    console.log("Clave generada en auth: ", clave);
-
-                    const textoEmail = "QronosBOOK - CLAVE de UN SOLO USO para fichar hoy " + fechaStringDate + " es: " + clave;
+                    const textoEmail = "QronosBOOK - CLAVE de UN SOLO USO para fichar hoy " + fechaStringDate + " es: " + req.user;
                     const textoSubject = "QRonosBOOK - Clave Temporal para Fichar fecha " + fechaStringDate;
 
                     const transporter = nodemailer.createTransport({
@@ -153,32 +163,44 @@ const auth = async (req, res) => {
                             text: textoEmail, // plain‑text body
                             html: `<p style="font-family: Arial, sans-serif; font-size: 16px; color: darkblue; font-weight: bold;">${textoEmail}</p>`, // HTML body
                         });
-                        console.info(info);
+                        // console.info(info); información del envío del correo. Descomentar si hay error
                     } catch (error) {
                         console.error("Error al enviar el correo:", error);
                         return res.render('QRurlDin/errorGeneral', { title: "Fichajes: Error General", layout: "./layouts/layout-mark" });
                     };
 
-                    return res.render('QRurlDin/urlTemporal', { title: "URL para Fichajes", layout: "./layouts/layout-mark", incorrecto: "true", error: "", noExiste: "", escondido: "true", escondidoBT: "true", escondidoFkey: "false", nombre: query.user, dni: query.dni, user: query.user, fecha: fechaAc, hora: req.body.hora, fichajeOK: "", noUsuCert: "" });
+                    return res.render('QRurlDin/urlTemporal', { title: "URL para Fichajes", layout: "./layouts/layout-mark", incorrecto: "true", error: "", noExiste: "", escondido: "true", escondidoBT: "true", escondidoFkey: "false", nombre: query.user, dni: query.dni, user: query.user, fecha: fechaAc, hora: req.body.hora, fichajeOK: "", noUsuCert: "", urlDin: global.dinURL, dinamic: dinKEYHash });
 
                 } else {
-                    return res.redirect('/codigoQR/urlTemporal?incorrecto=true&error=&noExiste=&escondido=false&escondidoBT=false&escondidoFkey=true&noUsuCert=');
+                    return res.redirect(`/codigoQR/urlTemporal/${global.dinURL}?incorrecto=true&error=&noExiste=&escondido=false&escondidoBT=false&escondidoFkey=true&noUsuCert=`);
                 };
             } else {
-                return res.redirect('/codigoQR/urlTemporal?incorrecto=&error=&noExiste=true&escondido=false&escondidoBT=false&escondidoFkey=true&noUsuCert=');
+                return res.redirect(`/codigoQR/urlTemporal/${global.dinURL}?incorrecto=&error=&noExiste=true&escondido=false&escondidoBT=false&escondidoFkey=true&noUsuCert=`);
             };
 
         } catch (error) {
             console.error("Error general de acceso:", error);
-            return res.redirect('/codigoQR/urlTemporal?incorrecto=&error=true&noExiste=&escondido=false&escondidoBT=false&escondidoFkey=true&noUsuCert=');
+            return res.redirect(`/codigoQR/urlTemporal/${global.dinURL}?incorrecto=&error=true&noExiste=&escondido=false&escondidoBT=false&escondidoFkey=true&noUsuCert=`);
         }
     } else {
-        return res.redirect('/codigoQR/urlTemporal?incorrecto=&error=true&noExiste=&escondido=false&escondidoBT=false&escondidoFkey=true&noUsuCert=');
+        return res.redirect(`/codigoQR/urlTemporal/${global.dinURL}?incorrecto=&error=true&noExiste=&escondido=false&escondidoBT=false&escondidoFkey=true&noUsuCert=`);
     };
 
 };
 
 const checkKey = async (req, res) => {
+    
+    const ruta = req.path.split("/");      
+
+    if (global.dinURL === undefined) {
+        return res.render('QRurlDin/errorGeneral', { title: "Fichajes: Error General", layout: "./layouts/layout-mark" });
+    } else if (ruta[2] === global.dinURL) {
+        const { sufijo } = global.dinURL; 
+    } else {
+        return res.render('QRurlDin/errorGeneral', { title: "Fichajes: Error General", layout: "./layouts/layout-mark" });
+    };
+
+    console.log("Prefijo desde controller CHECKKEY global.dinURL: ", global.dinURL); 
 
     const fechaActual = new Date();
     const opciones = { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' };
@@ -186,9 +208,13 @@ const checkKey = async (req, res) => {
     
     console.log("req.body: ", req.body);
     console.log("req.body.nombrekey: ", req.body.nombreKey);
-    console.log("clave: ", clave);
+    console.log("clave del req.body: ", req.body.dinamic);
 
-    if (req.body.nombreKey === clave) {
+    const correcto = await bcrypt.compare(req.body.nombreKey, req.body.dinamic);
+
+    console.log("Comparación de datos KEY: ",correcto);
+
+    if (correcto) {
 
         const hoy = new Date();
         const yyyy = hoy.getFullYear();
@@ -202,10 +228,6 @@ const checkKey = async (req, res) => {
             const query = await modelMark.lastMark();
             if (query.length !== 0) {
                 let lastFecha = query[0].date;
-                console.log('Registro traído: ', query);
-                console.log('Última Fecha en BBDD: ', lastFecha);
-                console.log("Tipo de dato fecha: ", typeof lastFecha);
-
                 lastFecha = new Date(lastFecha);
 
                 const yyyyBBDD = lastFecha.getFullYear();
@@ -217,22 +239,16 @@ const checkKey = async (req, res) => {
                 const sonMismoDia =
                     hoy.getFullYear() === lastFecha.getFullYear() &&
                     hoy.getMonth() === lastFecha.getMonth() &&
-                    hoy.getDate() === lastFecha.getDate();
-
-                console.log("Son el mismo día: ", sonMismoDia); // true
+                    hoy.getDate() === lastFecha.getDate();                
 
                 if (sonMismoDia) {
-                    console.log("TRUE: fecha BBDD : ", fechaBBDD, " Son el MISMO día: ", fechaStringDate);
                     const markToDayInt = query[0].id;
                     markForStr = markToDayInt.toString().slice(8);
                     markForInt = parseInt(markForStr, 10);
                     markForInt++;
                     markToDay = markForInt.toString().padStart(4, '0');
-                    console.log('markToDay: ', markToDay);
                 } else {
-                    console.log("FALSE: fecha BBDD : ", fechaBBDD, " es anterior la de hoy: ", fechaStringDate);
                     markToDay = "0001";
-                    console.log('markToDay: ', markToDay);
                 };
 
             } else {
@@ -264,17 +280,29 @@ const checkKey = async (req, res) => {
             return res.render('QRurlDin/errorGeneral', { title: "Fichajes: Error General", layout: "./layouts/layout-mark" });
         }
 
-        return res.render('QRurlDin/urlTemporal', { title: "Fichaje Correcto", layout: "./layouts/layout-mark", incorrecto: "true", error: "", noExiste: "", escondido: "true", escondidoBT: "true", escondidoFkey: "true", nombre: req.body.user, dni: req.body.dni, user: req.body.user, fecha: fechaAc, hora: req.body.hora, fichajeOK: "true", noUsuCert: "" });
+        return res.render('QRurlDin/urlTemporal', { title: "Fichaje Correcto", layout: "./layouts/layout-mark", incorrecto: "true", error: "", noExiste: "", escondido: "true", escondidoBT: "true", escondidoFkey: "true", nombre: req.body.user, dni: req.body.dni, user: req.body.user, fecha: fechaAc, hora: req.body.hora, fichajeOK: "true", noUsuCert: "", urlDin: global.dinURL, dinamic: "" });
 
     } else {
 
-        return res.render('QRurlDin/urlTemporal', { title: "Fichaje Erróneo", layout: "./layouts/layout-mark", incorrecto: "true", error: "", noExiste: "", escondido: "true", escondidoBT: "true", escondidoFkey: "false", nombre: req.body.user, dni: req.body.dni, user: req.body.user, fecha: fechaAc, hora: req.body.hora, fichajeOK: "false", noUsuCert: "" });
+        return res.render('QRurlDin/urlTemporal', { title: "Fichaje Erróneo", layout: "./layouts/layout-mark", incorrecto: "true", error: "", noExiste: "", escondido: "true", escondidoBT: "true", escondidoFkey: "false", nombre: req.body.user, dni: req.body.dni, user: req.body.user, fecha: fechaAc, hora: req.body.hora, fichajeOK: "false", noUsuCert: "", urlDin: global.dinURL, dinamic: req.body.dinamic  });
 
     };
 
 };
 
 const urlTemporalCert = async (req, res) => {
+
+    const ruta = req.path.split("/");
+
+    if (global.dinURL === undefined) {
+        return res.render('QRurlDin/errorGeneral', { title: "Fichajes: Error General", layout: "./layouts/layout-mark" });
+    } else if (ruta[2] === global.dinURL) {
+        const { sufijo } = global.dinURL; 
+    } else {
+        return res.render('QRurlDin/errorGeneral', { title: "Fichajes: Error General", layout: "./layouts/layout-mark" });
+    };
+
+    console.log("Prefijo desde controller URLTEMPORALCERT global.dinURL: ", global.dinURL); 
 
     if (req.user.datos.tag == "NoHayCertificado") {
         return res.status(401).render('QRurlDin/cert_Empty', { title: "Certificado no proporcionado", layout: "./layouts/layout-mark" });
@@ -320,10 +348,6 @@ const urlTemporalCert = async (req, res) => {
                     const query = await modelMark.lastMark();
                     if (query.length !== 0) {
                         let lastFecha = query[0].date;
-                        console.log('Registro traído: ', query);
-                        console.log('Última Fecha en BBDD: ', lastFecha);
-                        console.log("Tipo de dato fecha: ", typeof lastFecha);
-
                         lastFecha = new Date(lastFecha);
 
                         const yyyyBBDD = lastFecha.getFullYear();
@@ -337,20 +361,14 @@ const urlTemporalCert = async (req, res) => {
                             hoy.getMonth() === lastFecha.getMonth() &&
                             hoy.getDate() === lastFecha.getDate();
 
-                        console.log("Son el mismo día: ", sonMismoDia); // true
-
                         if (sonMismoDia) {
-                            console.log("TRUE: fecha BBDD : ", fechaBBDD, " Son el MISMO día: ", fechaStringDate);
                             const markToDayInt = query[0].id;
                             markForStr = markToDayInt.toString().slice(8);
                             markForInt = parseInt(markForStr, 10);
                             markForInt++;
                             markToDay = markForInt.toString().padStart(4, '0');
-                            console.log('markToDay: ', markToDay);
                         } else {
-                            console.log("FALSE: fecha BBDD : ", fechaBBDD, " es anterior la de hoy: ", fechaStringDate);
                             markToDay = "0001";
-                            console.log('markToDay: ', markToDay);
                         };
 
                     } else {
@@ -382,10 +400,10 @@ const urlTemporalCert = async (req, res) => {
                     return res.render('QRurlDin/errorGeneral', { title: "Fichajes: Error General", layout: "./layouts/layout-mark" });
                 }
 
-                return res.render('QRurlDin/urlTemporal', { title: "Fichaje Correcto", layout: "./layouts/layout-mark", incorrecto: "true", error: "", noExiste: "", escondido: "true", escondidoBT: "true", escondidoFkey: "true", nombre: "", dni: "", user: "", fecha: fechaAc, hora: req.query.hora, fichajeOK: "", noUsuCert: "true" });
+                return res.render('QRurlDin/urlTemporal', { title: "Fichaje Correcto", layout: "./layouts/layout-mark", incorrecto: "true", error: "", noExiste: "", escondido: "true", escondidoBT: "true", escondidoFkey: "true", nombre: "", dni: "", user: "", fecha: fechaAc, hora: req.query.hora, fichajeOK: "", noUsuCert: "true", urlDin: global.dinURL, dinamic: "" });
 
             } else {
-                return res.render('QRurlDin/urlTemporal', { title: "Fichaje Erróneo", layout: "./layouts/layout-mark", incorrecto: "true", error: "", noExiste: "True", escondido: "true", escondidoBT: "true", escondidoFkey: "true", nombre: "", dni: "", user: "", fecha: fechaAc, hora: req.query.hora, fichajeOK: "", noUsuCert: "false" });
+                return res.render('QRurlDin/urlTemporal', { title: "Fichaje Erróneo", layout: "./layouts/layout-mark", incorrecto: "true", error: "", noExiste: "True", escondido: "true", escondidoBT: "true", escondidoFkey: "true", nombre: "", dni: "", user: "", fecha: fechaAc, hora: req.query.hora, fichajeOK: "", noUsuCert: "false", urlDin: global.dinURL, dinamic: "" });
 
             };
 

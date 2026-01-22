@@ -2,7 +2,7 @@
 <h3 class="relojH3"><%= fecha %></h3>
 <h3 class="relojH3"><%= hora %></h3>
 <div align="center" style="margin: 25px;">
-    <button class="btFichaje" id="btCert" onclick="location.href='/codigoQR/urlTemporalCert?hora=<%= hora %>'">Fichar con Certificado</button>
+    <button class="btFichaje" id="btCert" onclick="location.href='/codigoQR/urlTemporalCert/<%= urlDin %>?hora=<%= hora %>'">Fichar con Certificado</button>
     <button class="btFichaje" id="btCred" onclick="mostrarFormulario()">Fichar con credenciales</button>
 </div>
 
@@ -24,7 +24,7 @@
 
     <input type="hidden" name="dni" id="dni" value=<%= dni %>>
     <input type="hidden" name="user" id="user" value=<%= user %>>
-    <input type="hidden" name="fecha" id="fecha" value=<%= fecha %>>
+    <input type="hidden" name="fecha" id="fecha" value="<%= fecha %>">
     <input type="hidden" name="hora" id="hora" value=<%= hora %>>    
    
     <button class="btEnviar" type="submit">Iniciar Sesión</button>   
@@ -39,7 +39,7 @@
 
 </form>
 
-<form id="myFormKey" action="/codigoQR/urlTemporalCheckKey" method="post">
+<form id="myFormKey" action="/codigoQR/urlTemporalCheckKey/<%= urlDin %>" method="post">
     <p class="p_form">
         <label for="nombreKey">Clave de Comprobación: </label>
     </p>
@@ -51,8 +51,10 @@
     <input type="hidden" name="nombre" id="nombre" value=<%= nombre %>>
     <input type="hidden" name="dni" id="dni" value=<%= dni %>>
     <input type="hidden" name="user" id="user" value=<%= user %>>
-    <input type="hidden" name="fecha" id="fecha" value=<%= fecha %>>
-    <input type="hidden" name="hora" id="hora" value=<%= hora %>>    
+    <input type="hidden" name="fecha" id="fecha" value="<%= fecha %>">
+    <input type="hidden" name="hora" id="hora" value=<%= hora %>>  
+    <input type="hidden" name="dinamic" id="dinamic" value=<%= dinamic %>>  
+
    
     <button class="btEnviar" type="submit">Guardar fichaje</button>    
     
