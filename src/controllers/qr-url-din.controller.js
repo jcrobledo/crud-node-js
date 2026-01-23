@@ -109,13 +109,13 @@ const urlTemporal = (req, res) => {
         nombre = req.query.nombre;
         fichajeOK = req.query.fichajeOK;
         noUsuCert = req.query.noUsuCert;   
-        sufijoURL = req.query.sufijoURL
+        sufijoURL = req.query.sufijoURL;
         
         console.log("Sufijo desde controller URLTEMPORAL dentro parámetros gDinURL: ", gDinURL);     
         console.log("query Sufijo URLTEMPORAL dentro parámetros sufijoURL: ", req.query.sufijoURL);
 
 
-        return res.render('QRurlDin/urlTemporal', { title: "URL para Fichajes", layout: "./layouts/layout-mark", fecha, hora, incorrecto, error, noExiste, escondido, escondidoBT, escondidoFkey, nombre, dni, user, fichajeOK, noUsuCert, dinamic: "", reloadQR: "", sufijoURL });
+        return res.render('QRurlDin/urlTemporal', { title: "URL para Fichajes", layout: "./layouts/layout-mark", fecha, hora, incorrecto, error, noExiste, escondido, escondidoBT, escondidoFkey, nombre, dni, user, fichajeOK, noUsuCert, dinamic: "", reloadQR: "", sufijoURL: req.query.sufijoURL });
     };    
     res.render('QRurlDin/urlTemporal', { title: "URL para Fichajes", layout: "./layouts/layout-mark", fecha, hora, incorrecto: "", error: "", noExiste: "", escondido: "true", escondidoBT: "false", escondidoFkey: "true", nombre: "", dni: "", user: "", fichajeOK: "", noUsuCert: "", dinamic: "", reloadQR: "true", sufijoURL: sufijoTexto });
 };
@@ -207,9 +207,11 @@ const checkKey = async (req, res) => {
     const { sufijo } = req.params;
 
     console.log("Sufijo desde controller CHECKKEY gDinURL: ", gDinURL);   
-    console.log("body Sufijo dentro CHECKKEY sufijoURL: ", req.body.sufijoURL);    
+    console.log("body Sufijo dentro CHECKKEY sufijo: ", sufijo);   
 
-    if (gDinURL === undefined) {
+
+
+    if (gDinURL === undefined || req.body.sufijoURL == "") {
         return res.render('QRurlDin/errorGeneral', { title: "Fichajes: Error General", layout: "./layouts/layout-mark" });
     }  else if (sufijo !== req.body.sufijoURL) {
         console.log("estoy en error general CHECKKEY");        
@@ -288,10 +290,8 @@ const checkKey = async (req, res) => {
         } catch (error) {
             console.error("Error guardar el fichaje:", error);
             return res.render('QRurlDin/errorGeneral', { title: "Fichajes: Error General", layout: "./layouts/layout-mark" });
-        }
-
-        return res.render('QRurlDin/urlTemporal', { title: "Fichaje Correcto", layout: "./layouts/layout-mark", incorrecto: "true", error: "", noExiste: "", escondido: "true", escondidoBT: "true", escondidoFkey: "true", nombre: req.body.user, dni: req.body.dni, user: req.body.user, fecha: fechaAc, hora: req.body.hora, fichajeOK: "true", noUsuCert: "", sufijoURL: req.body.sufijoURL, dinamic: "", reloadQR: "" });
-
+        } 
+        return res.redirect(`/codigoQR/urlTemporal/${req.body.sufijoURL}?incorrecto=true&error=&noExiste=&escondido=true&escondidoBT=true&escondidoFkey=true&nombre=${req.body.user}&dni=${req.body.dni}&user=${req.body.user}&fecha=${fechaAc}&hora=${req.body.hora}&fichajeOK=true&noUsuCert=&sufijoURL=${req.body.sufijoURL}&dinamic=&reloadQR=`);
     } else {
 
         return res.render('QRurlDin/urlTemporal', { title: "Fichaje Erróneo", layout: "./layouts/layout-mark", incorrecto: "true", error: "", noExiste: "", escondido: "true", escondidoBT: "true", escondidoFkey: "false", nombre: req.body.user, dni: req.body.dni, user: req.body.user, fecha: fechaAc, hora: req.body.hora, fichajeOK: "false", noUsuCert: "", sufijoURL: req.body.sufijoURL, dinamic: req.body.dinamic, reloadQR: "" });
@@ -409,9 +409,7 @@ const urlTemporalCert = async (req, res) => {
                     console.error("Error guardar el fichaje:", error);
                     return res.render('QRurlDin/errorGeneral', { title: "Fichajes: Error General", layout: "./layouts/layout-mark" });
                 }
-
-                return res.render('QRurlDin/urlTemporal', { title: "Fichaje Correcto", layout: "./layouts/layout-mark", incorrecto: "true", error: "", noExiste: "", escondido: "true", escondidoBT: "true", escondidoFkey: "true", nombre: "", dni: "", user: "", fecha: fechaAc, hora: req.query.hora, fichajeOK: "", noUsuCert: "true", sufijoURL: req.query.sufijoURL, dinamic: "", reloadQR: "" });
-
+                return res.redirect(`/codigoQR/urlTemporal/${req.query.sufijoURL}?incorrecto=true&error=&noExiste=&escondido=true&escondidoBT=true&escondidoFkey=true&nombre=&dni=&user=&fecha=${fechaAc}&hora=${req.query.hora}&fichajeOK=&noUsuCert=true&sufijoURL=${req.query.sufijoURL}&dinamic=&reloadQR=`);
             } else {
                 return res.render('QRurlDin/urlTemporal', { title: "Fichaje Erróneo", layout: "./layouts/layout-mark", incorrecto: "true", error: "", noExiste: "True", escondido: "true", escondidoBT: "true", escondidoFkey: "true", nombre: "", dni: "", user: "", fecha: fechaAc, hora: req.query.hora, fichajeOK: "", noUsuCert: "false", sufijoURL: req.query.sufijoURL, dinamic: "", reloadQR: "" });
 

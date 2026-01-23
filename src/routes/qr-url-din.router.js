@@ -29,6 +29,7 @@ router.get("/urlTemporal/:sufijo", controller.urlTemporal);
 router.post("/urlTemporal/:sufijo", rules, dinKEY.generateKey, controller.auth);
 router.get("/urlTemporalCert/:sufijo", changePortX509.changePortX509, vTokenCert.verifyCert, controller.urlTemporalCert);
 router.post("/urlTemporalCheckKey/:sufijo", controller.checkKey);
+router.get("/urlTemporalCheckKey/:sufijo", controller.checkKey);
 router.get("/api/actualTime", controller.actualTime);
 
 module.exports = router;  //para poder exportar la ruta a otros códigos
