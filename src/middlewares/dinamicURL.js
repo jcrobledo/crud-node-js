@@ -6,7 +6,7 @@ const prefixDinamicUrl = (req, res, next) => {
     for (let i = 0; i < 15; i++) {
         sufijo += caracteres.charAt(Math.floor(Math.random() * caracteres.length));
     }
-    global.dinURL = sufijo;   
+    //global.dinURL = sufijo;   
     req.user = sufijo;
     next();
 

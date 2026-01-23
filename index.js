@@ -1,9 +1,10 @@
 require("dotenv").config(); // requerimos el módulo para leer las variables de entorno
 
+const express = require("express");
 const https = require('https'); // para HTTPS
 const fs = require('fs');       // para HTTPS
+const { Server } = require('socket.io');
 
-const express = require("express");
 const app = express();
 
 app.use((req, res, next) => {
@@ -63,7 +64,18 @@ app.use("/codigoQR", require('./src/routes/qr-url-din.router'));
 
 app.listen(PORT, () => console.log(`http://localhost:${PORT}`));
 
-https.createServer(baseOptions, app).listen(PORTSSL, () => {
+const server = https.createServer(baseOptions, app);
+const io = new Server(server);
+
+io.on('connection', (socket) => {    
+    socket.on('SolicitarRecargaQR', () => { // El servidor está "suscrito" a este evento que viene del navegador
+        console.log('Conexión con dispositivo móvil realizada. Renovación QR solicitada.');         
+        io.emit('EjecutarRecargaQR'); // El servidor reacciona emitiendo el evento a TODOS los demás
+        console.log('QR renovado.');
+    });
+});
+
+server.listen(PORTSSL, () => {
     console.log(`https://localhost:${PORTSSL}`);
 });
 
