@@ -1,8 +1,13 @@
+<div id="loader-overlay" class="overlay">  
+  <img src="/images/orange_circles.gif" alt="" class="loader-gif">
+</div>
+
+
 <h1>DATOS DEL FICHAJE</h1>    
 <h3 class="relojH3"><%= fecha %></h3>
 <h3 class="relojH3"><%= hora %></h3>
 <div align="center" style="margin: 25px;">
-    <button class="btFichaje" id="btCert" onclick="location.href='/codigoQR/urlTemporalCert/<%= sufijoURL %>?sufijoURL=<%= sufijoURL %>&hora=<%= hora %>'">Fichar con Certificado</button>
+    <button class="btFichaje" id="btCert" onclick="document.getElementById('loader-overlay').style.display='flex'; location.href='/codigoQR/urlTemporalCert/<%= sufijoURL %>?sufijoURL=<%= sufijoURL %>&hora=<%= hora %>'">Fichar con Certificado</button>
     <button class="btFichaje" id="btCred" onclick="mostrarFormulario()">Fichar con credenciales</button>
 </div>
 
@@ -141,6 +146,13 @@ if (noUsuCert == '') {
 } else {
     document.getElementById('mgsFichCertOK').classList.add('escondido'); 
     document.getElementById('mgsFichCertKO').classList.remove('escondido');
+};
+
+function mostrarBloqueo() {
+    const boton = event.currentTarget;
+    boton.disabled = true;       
+  
+  document.getElementById('loader-overlay').style.display = 'flex';
 };
 
 </script>
